@@ -1,20 +1,44 @@
 DOCKER_NETWORK = docker-hadoop_default
-ENV_FILE = hadoop.env
+ENV_FILE = ./hack/hadoop.env
 current_branch := $(shell git rev-parse --abbrev-ref HEAD)
+
+up:
+	docker-compose up -d
+
+down:
+	docker-compose down
+
+clean: down
+	docker-compose down -v
+	docker system prune -f
+	rm -r hack/hadoop_datanode
+	rm -r hack/hadoop_historyserver
+	rm -r hack/hadoop_namenode
+	rm -r hack/input
+
 build:
-	docker build -t bde2020/hadoop-base:$(current_branch) ./base
-	docker build -t bde2020/hadoop-namenode:$(current_branch) ./namenode
-	docker build -t bde2020/hadoop-datanode:$(current_branch) ./datanode
-	docker build -t bde2020/hadoop-resourcemanager:$(current_branch) ./resourcemanager
-	docker build -t bde2020/hadoop-nodemanager:$(current_branch) ./nodemanager
-	docker build -t bde2020/hadoop-historyserver:$(current_branch) ./historyserver
-	docker build -t bde2020/hadoop-submit:$(current_branch) ./submit
+	docker build -t closetool/hadoop-base:$(current_branch) ./base
+	docker build -t closetool/hadoop-namenode:$(current_branch) ./namenode
+	docker build -t closetool/hadoop-datanode:$(current_branch) ./datanode
+	docker build -t closetool/hadoop-resourcemanager:$(current_branch) ./resourcemanager
+	docker build -t closetool/hadoop-nodemanager:$(current_branch) ./nodemanager
+	docker build -t closetool/hadoop-historyserver:$(current_branch) ./historyserver
+	docker build -t closetool/hadoop-submit:$(current_branch) ./submit
+
+push:
+	docker push closetool/hadoop-base:$(current_branch)
+	docker push closetool/hadoop-namenode:$(current_branch)
+	docker push closetool/hadoop-datanode:$(current_branch)
+	docker push closetool/hadoop-resourcemanager:$(current_branch)
+	docker push closetool/hadoop-nodemanager:$(current_branch)
+	docker push closetool/hadoop-historyserver:$(current_branch)
+	docker push closetool/hadoop-submit:$(current_branch)
 
 wordcount:
 	docker build -t hadoop-wordcount ./submit
-	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -mkdir -p /input/
-	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -copyFromLocal -f /opt/hadoop-3.2.1/README.txt /input/
+	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} closetool/hadoop-base:$(current_branch) hdfs dfs -mkdir -p /input/
+	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} closetool/hadoop-base:$(current_branch) hdfs dfs -copyFromLocal -f /opt/hadoop-3.3.6/README.txt /input/
 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-wordcount
-	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -cat /output/*
-	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -rm -r /output
-	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -rm -r /input
+	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} closetool/hadoop-base:$(current_branch) hdfs dfs -cat /output/*
+	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} closetool/hadoop-base:$(current_branch) hdfs dfs -rm -r /output
+	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} closetool/hadoop-base:$(current_branch) hdfs dfs -rm -r /input

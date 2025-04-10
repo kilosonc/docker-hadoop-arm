@@ -1,1 +1,3 @@
 data/
+hack/*
+!hack/hadoop.env

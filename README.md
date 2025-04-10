@@ -1,5 +1,3 @@
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/big-data-europe/Lobby)
-
 # Changes
 
 Version 2.0.0 introduces uses wait_for_it script for the cluster startup
@@ -12,18 +10,14 @@ See repository branches for supported hadoop versions
 ## Quick Start
 
 To deploy an example HDFS cluster, run:
-```
-  docker-compose up
+```bash
+  make build # build docker images locally
+  make up
 ```
 
 Run example wordcount job:
-```
+```bash
   make wordcount
-```
-
-Or deploy in swarm:
-```
-docker stack deploy -c docker-compose-v3.yml hadoop
 ```
 
 `docker-compose` creates a docker network that can be found by running `docker network list`, e.g. `dockerhadoop_default`.
@@ -61,3 +55,7 @@ The available configurations are:
 * /etc/hadoop/mapred-site.xml  MAPRED_CONF
 
 If you need to extend some other configuration file, refer to base/entrypoint.sh bash script.
+
+## References
+
+* [Hadoop Docker](https://github.com/big-data-europe/docker-hadoop)

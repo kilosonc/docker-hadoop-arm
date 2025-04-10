@@ -1,6 +1,6 @@
-FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+FROM closetool/hadoop-base:2.0.0-hadoop3.3.6-java11
 
-MAINTAINER Ivan Ermilov <ivan.s.ermilov@gmail.com>
+LABEL org.opencontainers.image.authors="Kiloson <4closetool3@gmail.com>"
 
 COPY WordCount.jar /opt/hadoop/applications/WordCount.jar
 
