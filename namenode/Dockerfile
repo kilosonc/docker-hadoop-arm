@@ -1,4 +1,6 @@
-FROM closetool/hadoop-base:2.0.0-hadoop3.3.6-java11
+ARG BASE_VERSION=2.0.0-hadoop3.3.6-java11
+
+FROM closetool/hadoop-base:${BASE_VERSION}
 
 LABEL org.opencontainers.image.authors="Kiloson <4closetool3@gmail.com>"
 

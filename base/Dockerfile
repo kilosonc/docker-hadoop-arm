@@ -2,6 +2,8 @@ FROM debian:bullseye
 
 LABEL org.opencontainers.image.authors="Kiloson <4closetool3@gmail.com>"
 
+ADD entrypoint.sh /entrypoint.sh
+
 # base layer, it would not change if update hadoop version
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     openjdk-11-jdk \
@@ -31,10 +33,7 @@ RUN curl -O https://dist.apache.org/repos/dist/release/hadoop/common/KEYS \
     && rm /tmp/hadoop.tar.gz* \
     && ln -s /opt/hadoop-$HADOOP_VERSION/etc/hadoop /etc/hadoop \
     && mkdir /opt/hadoop-$HADOOP_VERSION/logs \
-    && mkdir /hadoop-data
-
-ADD entrypoint.sh /entrypoint.sh
-
-RUN chmod a+x /entrypoint.sh
+    && mkdir /hadoop-data \
+    && chmod a+x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

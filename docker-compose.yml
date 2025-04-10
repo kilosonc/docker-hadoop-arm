@@ -2,7 +2,7 @@ version: "3"
 
 services:
   namenode:
-    image: closetool/hadoop-namenode:2.0.0-hadoop3.3.6-java11
+    image: closetool/hadoop-namenode:${BASE_VERSION}
     container_name: namenode
     hostname: namenode
     restart: always
@@ -18,7 +18,7 @@ services:
       - ./hack/hadoop.env
 
   datanode:
-    image: closetool/hadoop-datanode:2.0.0-hadoop3.3.6-java11
+    image: closetool/hadoop-datanode:${BASE_VERSION}
     container_name: datanode
     restart: always
     volumes:
@@ -29,7 +29,7 @@ services:
       - ./hack/hadoop.env
 
   resourcemanager:
-    image: closetool/hadoop-resourcemanager:2.0.0-hadoop3.3.6-java11
+    image: closetool/hadoop-resourcemanager:${BASE_VERSION}
     container_name: resourcemanager
     restart: always
     environment:
@@ -38,7 +38,7 @@ services:
       - ./hack/hadoop.env
 
   nodemanager1:
-    image: closetool/hadoop-nodemanager:2.0.0-hadoop3.3.6-java11
+    image: closetool/hadoop-nodemanager:${BASE_VERSION}
     container_name: nodemanager
     restart: always
     environment:
@@ -47,7 +47,7 @@ services:
       - ./hack/hadoop.env
 
   historyserver:
-    image: closetool/hadoop-historyserver:2.0.0-hadoop3.3.6-java11
+    image: closetool/hadoop-historyserver:${BASE_VERSION}
     container_name: historyserver
     restart: always
     environment:

@@ -3,13 +3,13 @@ ENV_FILE = ./hack/hadoop.env
 current_branch := $(shell git rev-parse --abbrev-ref HEAD)
 
 up:
-	docker-compose up -d
+	BASE_VERSION=$(current_branch) docker-compose up -d
 
 down:
-	docker-compose down
+	BASE_VERSION=$(current_branch) docker-compose down
 
 clean: down
-	docker-compose down -v
+	BASE_VERSION=$(current_branch) docker-compose down -v
 	docker system prune -f
 	rm -r hack/hadoop_datanode
 	rm -r hack/hadoop_historyserver
@@ -18,12 +18,12 @@ clean: down
 
 build:
 	docker build -t closetool/hadoop-base:$(current_branch) ./base
-	docker build -t closetool/hadoop-namenode:$(current_branch) ./namenode
-	docker build -t closetool/hadoop-datanode:$(current_branch) ./datanode
-	docker build -t closetool/hadoop-resourcemanager:$(current_branch) ./resourcemanager
-	docker build -t closetool/hadoop-nodemanager:$(current_branch) ./nodemanager
-	docker build -t closetool/hadoop-historyserver:$(current_branch) ./historyserver
-	docker build -t closetool/hadoop-submit:$(current_branch) ./submit
+	docker build -t closetool/hadoop-namenode:$(current_branch) --build-arg BASE_VERSION=$(current_branch) ./namenode
+	docker build -t closetool/hadoop-datanode:$(current_branch) --build-arg BASE_VERSION=$(current_branch) ./datanode
+	docker build -t closetool/hadoop-resourcemanager:$(current_branch) --build-arg BASE_VERSION=$(current_branch) ./resourcemanager
+	docker build -t closetool/hadoop-nodemanager:$(current_branch) --build-arg BASE_VERSION=$(current_branch) ./nodemanager
+	docker build -t closetool/hadoop-historyserver:$(current_branch) --build-arg BASE_VERSION=$(current_branch) ./historyserver
+	docker build -t closetool/hadoop-submit:$(current_branch) --build-arg BASE_VERSION=$(current_branch) ./submit
 
 push:
 	docker push closetool/hadoop-base:$(current_branch)
