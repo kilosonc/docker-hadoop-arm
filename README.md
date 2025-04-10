@@ -11,7 +11,7 @@ See repository branches for supported hadoop versions
 
 To deploy an example HDFS cluster, run:
 ```bash
-  make build # build docker images locally
+  make build # optional, build docker images locally, or just use pre-built image on docker hub
   make up
 ```
 
